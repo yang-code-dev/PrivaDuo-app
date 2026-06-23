@@ -67,32 +67,6 @@ const toggleItems = [
   },
 ]
 
-// #region debug-point N1:notification-settings
-function reportNotificationDebug(msg, data = {}) {
-  if (
-    typeof window === 'undefined'
-    || !['localhost', '127.0.0.1', 'static-mp-171ab784-e0ea-4b77-ad6d-5d53ccbbd8a5.next.bspapp.com'].includes(window.location?.hostname || '')
-  ) {
-    return
-  }
-  fetch('http://127.0.0.1:7777/event', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      sessionId: 'auth-session-logout',
-      runId: 'pre-fix',
-      hypothesisId: 'N1',
-      location: 'src/pages/notification/index.vue',
-      msg: `[DEBUG] ${msg}`,
-      data,
-      ts: Date.now(),
-    }),
-  }).catch(() => {})
-}
-// #endregion
-
 function getSession() {
   return {
     accessToken: userStore.profile.accessToken,
@@ -110,31 +84,12 @@ function showToast(message) {
 async function loadSettings(session = getSession()) {
   const currentLoadToken = ++notificationLoadToken
   try {
-    // #region debug-point N1:notification-settings
-    reportNotificationDebug('notification-load-start', {
-      hasToken: Boolean(session.accessToken),
-      hasSessionSecret: Boolean(session.sessionSecret),
-      uid: userStore.profile.uid || '',
-    })
-    // #endregion
     const result = await getNotificationSettings(session)
     if (currentLoadToken !== notificationLoadToken) return
     Object.assign(form, result.settings || {})
     preview.value = result.preview || []
-    // #region debug-point N1:notification-settings
-    reportNotificationDebug('notification-load-success', {
-      settings: result.settings || {},
-      previewCount: Array.isArray(result.preview) ? result.preview.length : 0,
-    })
-    // #endregion
   } catch (error) {
     if (currentLoadToken !== notificationLoadToken) return
-    // #region debug-point N1:notification-settings
-    reportNotificationDebug('notification-load-error', {
-      message: error.message || '',
-      code: error.code || '',
-    })
-    // #endregion
     if (error.handled) return
     showToast(error.message || '通知设置加载失败')
   }
@@ -148,27 +103,11 @@ async function handleSave() {
   if (submitting.value) return
   submitting.value = true
   try {
-    // #region debug-point N1:notification-settings
-    reportNotificationDebug('notification-save-start', {
-      form: { ...form },
-    })
-    // #endregion
     const result = await saveNotificationSettings({ ...form }, getSession())
     Object.assign(form, result.settings || {})
     preview.value = result.preview || []
-    // #region debug-point N1:notification-settings
-    reportNotificationDebug('notification-save-success', {
-      settings: result.settings || {},
-    })
-    // #endregion
     showToast('通知设置已保存')
   } catch (error) {
-    // #region debug-point N1:notification-settings
-    reportNotificationDebug('notification-save-error', {
-      message: error.message || '',
-      code: error.code || '',
-    })
-    // #endregion
     if (error.handled) return
     showToast(error.message || '通知设置保存失败')
   } finally {

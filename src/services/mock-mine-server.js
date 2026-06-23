@@ -17,32 +17,6 @@ const REQUEST_MAX_DRIFT_MS = 5 * 60 * 1000
 const SIGNATURE_LIMIT = 40
 const SECONDARY_AUTH_SCOPE = 'pair-space-unbind-secondary'
 
-// #region debug-point E:mock-profile-persist
-function reportMockMineDebug(msg, data = {}) {
-  if (
-    typeof window === 'undefined'
-    || !['localhost', '127.0.0.1'].includes(window.location?.hostname || '')
-  ) {
-    return
-  }
-  fetch('http://127.0.0.1:7777/event', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      sessionId: 'avatar-upload-fail',
-      runId: 'pre-fix',
-      hypothesisId: 'E',
-      location: 'src/services/mock-mine-server.js',
-      msg: `[DEBUG] ${msg}`,
-      data,
-      ts: Date.now(),
-    }),
-  }).catch(() => {})
-}
-// #endregion
-
 function defaultDb() {
   return {
     users: [],
@@ -445,22 +419,11 @@ function handleUpdateProfile(db, envelope) {
     fail(`个性签名需限制在 ${SIGNATURE_LIMIT} 个字符内`, 'INVALID_SIGNATURE')
   }
 
-  // #region debug-point E:mock-profile-persist
-  reportMockMineDebug('mock-update-profile-before-persist', {
-    avatar: payload.avatar || '',
-    avatarScheme: String(payload.avatar || '').split(':')[0] || '',
-  })
-  // #endregion
   user.nickname = String(payload.nickname || '').trim()
   user.avatar = payload.avatar || ''
   user.signature = signature
   user.updatedAt = Date.now()
   saveDb(db)
-  // #region debug-point E:mock-profile-persist
-  reportMockMineDebug('mock-update-profile-after-persist', {
-    avatar: user.avatar || '',
-  })
-  // #endregion
   return buildOverview(db, user)
 }
 

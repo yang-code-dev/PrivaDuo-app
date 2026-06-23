@@ -95,32 +95,6 @@ const viewer = reactive({
   current: 0,
 })
 
-// #region debug-point Y1:diary-image-submit
-function reportDiaryImageDebug(msg, data = {}) {
-  if (
-    typeof window === 'undefined'
-    || !['localhost', '127.0.0.1'].includes(window.location?.hostname || '')
-  ) {
-    return
-  }
-  fetch('http://127.0.0.1:7777/event', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      sessionId: 'web-image-upload',
-      runId: 'pre-fix',
-      hypothesisId: 'Y1',
-      location: 'src/pages/diary/detail.vue',
-      msg: `[DEBUG] ${msg}`,
-      data,
-      ts: Date.now(),
-    }),
-  }).catch(() => {})
-}
-// #endregion
-
 function getSession() {
   return {
     accessToken: userStore.profile.accessToken,
@@ -224,16 +198,6 @@ async function chooseDiaryImages() {
       })
     })
     editorForm.images = [...editorForm.images, ...(result.tempFilePaths || [])].slice(0, 9)
-    // #region debug-point Y1:diary-image-submit
-    reportDiaryImageDebug('diary-images-chosen', {
-      tempFilePaths: result.tempFilePaths || [],
-      tempFiles: (result.tempFiles || []).map((item) => ({
-        path: item.path || item.tempFilePath || '',
-        size: Number(item.size || 0),
-      })),
-      mergedImages: editorForm.images,
-    })
-    // #endregion
   } catch (error) {
     showToast('图片选择已取消')
   }
@@ -248,14 +212,6 @@ async function submitDiary() {
   }
 
   try {
-    // #region debug-point Y1:diary-image-submit
-    reportDiaryImageDebug('diary-submit', {
-      title,
-      imageCount: editorForm.images.length,
-      imageSchemes: editorForm.images.map((item) => String(item || '').split(':')[0] || ''),
-      images: editorForm.images,
-    })
-    // #endregion
     const result = await saveDiary(
       {
         id: editorForm.id,

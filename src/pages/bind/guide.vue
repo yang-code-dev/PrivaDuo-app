@@ -69,32 +69,6 @@ const remoteCode = ref('')
 const generating = ref(false)
 const binding = ref(false)
 
-// #region debug-point B3:bind-guide-flow
-function reportBindGuideDebug(msg, data = {}) {
-  if (
-    typeof window === 'undefined'
-    || !['localhost', '127.0.0.1', 'static-mp-171ab784-e0ea-4b77-ad6d-5d53ccbbd8a5.next.bspapp.com'].includes(window.location?.hostname || '')
-  ) {
-    return
-  }
-  fetch('http://127.0.0.1:7777/event', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      sessionId: 'auth-bind-stability',
-      runId: 'pre-fix',
-      hypothesisId: 'B3',
-      location: 'src/pages/bind/guide.vue',
-      msg: `[DEBUG] ${msg}`,
-      data,
-      ts: Date.now(),
-    }),
-  }).catch(() => {})
-}
-// #endregion
-
 const inviteCodeHint = computed(() => {
   if (!remoteCode.value) return '请输入 6 位纯数字邀请码，系统会实时校验格式。'
   return validateInviteCode(remoteCode.value) ? '邀请码格式正确，可直接发起绑定。' : '邀请码必须为 6 位纯数字。'
@@ -123,13 +97,6 @@ async function bootstrapState() {
       accessToken: userStore.profile.accessToken,
       sessionSecret: userStore.profile.sessionSecret,
     })
-    // #region debug-point B3:bind-guide-flow
-    reportBindGuideDebug('bind-guide-bootstrap-success', {
-      uid: result.user?.uid || '',
-      bindingStatus: result.couple?.bindingStatus || '',
-      inviteCode: coupleStore.inviteCode || '',
-    })
-    // #endregion
     syncStore(result)
     if (result.couple?.bindingStatus === 'bound') {
       reLaunch(ROUTES.home)
@@ -155,14 +122,6 @@ async function handleGenerate() {
 
   generating.value = true
   try {
-    // #region debug-point B3:bind-guide-flow
-    reportBindGuideDebug('bind-guide-generate-start', {
-      uid: userStore.profile.uid || '',
-      hasToken: Boolean(userStore.profile.accessToken),
-      hasSessionSecret: Boolean(userStore.profile.sessionSecret),
-      inviteCodeBefore: coupleStore.inviteCode || '',
-    })
-    // #endregion
     const result = await generateInviteCode({
       accessToken: userStore.profile.accessToken,
       sessionSecret: userStore.profile.sessionSecret,
@@ -171,21 +130,8 @@ async function handleGenerate() {
     if (result.inviteCode) {
       coupleStore.setInviteCode(result.inviteCode)
     }
-    // #region debug-point B3:bind-guide-flow
-    reportBindGuideDebug('bind-guide-generate-success', {
-      inviteCodeResult: result.inviteCode || '',
-      inviteCodeAfter: coupleStore.inviteCode || '',
-      bindingStatus: result.couple?.bindingStatus || '',
-    })
-    // #endregion
     showToast('邀请码已生成')
   } catch (error) {
-    // #region debug-point B3:bind-guide-flow
-    reportBindGuideDebug('bind-guide-generate-error', {
-      message: error.message || '',
-      code: error.code || '',
-    })
-    // #endregion
     showToast(error.message || '邀请码生成失败')
   } finally {
     generating.value = false
@@ -216,12 +162,6 @@ async function handleBind() {
   uni.showLoading({ title: '绑定中...', mask: true })
 
   try {
-    // #region debug-point B3:bind-guide-flow
-    reportBindGuideDebug('bind-guide-bind-start', {
-      inviteCode: remoteCode.value,
-      uid: userStore.profile.uid || '',
-    })
-    // #endregion
     const result = await bindByInviteCode(
       { inviteCode: remoteCode.value },
       {
@@ -230,24 +170,11 @@ async function handleBind() {
       },
     )
     syncStore(result)
-    // #region debug-point B3:bind-guide-flow
-    reportBindGuideDebug('bind-guide-bind-success', {
-      pairId: result.couple?.pairId || '',
-      bindingStatus: result.couple?.bindingStatus || '',
-    })
-    // #endregion
     uni.showToast({ title: '绑定成功', icon: 'success' })
     setTimeout(() => {
       reLaunch(ROUTES.home)
     }, 500)
   } catch (error) {
-    // #region debug-point B3:bind-guide-flow
-    reportBindGuideDebug('bind-guide-bind-error', {
-      message: error.message || '',
-      code: error.code || '',
-      inviteCode: remoteCode.value,
-    })
-    // #endregion
     showToast(error.message || '绑定失败，请稍后再试')
   } finally {
     uni.hideLoading()
@@ -256,12 +183,6 @@ async function handleBind() {
 }
 
 function handleSkip() {
-  // #region debug-point B3:bind-guide-flow
-  reportBindGuideDebug('bind-guide-skip', {
-    uid: userStore.profile.uid || '',
-    bindingStatus: coupleStore.bindingStatus || '',
-  })
-  // #endregion
   reLaunch(ROUTES.home)
 }
 

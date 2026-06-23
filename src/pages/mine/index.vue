@@ -95,32 +95,6 @@ const loggingOut = ref(false)
 const loadingMineData = ref(false)
 let loadMineDataPromise = null
 
-// #region debug-point M2:mine-navigation-flow
-function reportMineNavigationDebug(msg, data = {}) {
-  if (
-    typeof window === 'undefined'
-    || !['localhost', '127.0.0.1', 'static-mp-171ab784-e0ea-4b77-ad6d-5d53ccbbd8a5.next.bspapp.com'].includes(window.location?.hostname || '')
-  ) {
-    return
-  }
-  fetch('http://127.0.0.1:7777/event', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      sessionId: 'auth-bind-stability',
-      runId: 'pre-fix',
-      hypothesisId: 'M2',
-      location: 'src/pages/mine/index.vue',
-      msg: `[DEBUG] ${msg}`,
-      data,
-      ts: Date.now(),
-    }),
-  }).catch(() => {})
-}
-// #endregion
-
 const profileInitial = computed(() => (userStore.profile.nickname || '我').slice(0, 1))
 const relationStatusText = computed(() => {
   if (overview.value?.relation?.status === 'unbound') return '已解绑'
@@ -206,14 +180,6 @@ async function loadMineData() {
       notificationPreview.value = result.notificationPreview || []
       userStore.syncUser(result.user)
       coupleStore.sync(result.couple)
-      // #region debug-point M2:mine-navigation-flow
-      reportMineNavigationDebug('mine-load-success', {
-        uid: result.user?.uid || '',
-        bindingStatus: result.couple?.bindingStatus || '',
-        pairId: result.couple?.pairId || '',
-        showPendingCard: !(result.couple?.bindingStatus === 'bound' && result.couple?.pairId),
-      })
-      // #endregion
 
       const albumResult = await getLocalAlbum({
         pairId: coupleStore.pairId || '',
@@ -232,14 +198,6 @@ async function loadMineData() {
 }
 
 async function handleNavigate(route, disabled = false, disabledMessage = '') {
-  // #region debug-point M2:mine-navigation-flow
-  reportMineNavigationDebug('mine-handle-navigate', {
-    route,
-    disabled,
-    bindingStatus: coupleStore.bindingStatus || '',
-    pairId: coupleStore.pairId || '',
-  })
-  // #endregion
   if (disabled) {
     showToast(disabledMessage || '当前状态下不可进入该页面')
     return
@@ -278,26 +236,12 @@ onShow(async () => {
   if (typeof uni.hideShareMenu === 'function') {
     uni.hideShareMenu()
   }
-  // #region debug-point M2:mine-navigation-flow
-  reportMineNavigationDebug('mine-on-show-start', {
-    uid: userStore.profile.uid || '',
-    bindingStatus: coupleStore.bindingStatus || '',
-    pairId: coupleStore.pairId || '',
-  })
-  // #endregion
   if (!guardPageAccess({ requireLogin: true })) return
   const ok = await ensureSessionValid({
     redirectOnFail: true,
     showExpiredToast: true,
   })
   if (!ok) return
-  // #region debug-point M2:mine-navigation-flow
-  reportMineNavigationDebug('mine-on-show-session-valid', {
-    uid: userStore.profile.uid || '',
-    bindingStatus: coupleStore.bindingStatus || '',
-    pairId: coupleStore.pairId || '',
-  })
-  // #endregion
   await loadMineData()
 })
 </script>

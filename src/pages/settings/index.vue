@@ -51,32 +51,6 @@ const form = reactive({
 
 const signatureLength = computed(() => getTextLength(form.signature || ''))
 
-// #region debug-point C:submit-avatar-payload
-function reportSettingsDebug(msg, data = {}) {
-  if (
-    typeof window === 'undefined'
-    || !['localhost', '127.0.0.1'].includes(window.location?.hostname || '')
-  ) {
-    return
-  }
-  fetch('http://127.0.0.1:7777/event', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      sessionId: 'avatar-upload-fail',
-      runId: 'pre-fix',
-      hypothesisId: 'C',
-      location: 'src/pages/settings/index.vue',
-      msg: `[DEBUG] ${msg}`,
-      data,
-      ts: Date.now(),
-    }),
-  }).catch(() => {})
-}
-// #endregion
-
 function getSession() {
   return {
     accessToken: userStore.profile.accessToken,
@@ -118,13 +92,6 @@ async function handleSubmit() {
 
   submitting.value = true
   try {
-    // #region debug-point C:submit-avatar-payload
-    reportSettingsDebug('settings-submit-profile', {
-      avatar: form.avatar,
-      avatarScheme: String(form.avatar || '').split(':')[0] || '',
-      nickname: form.nickname,
-    })
-    // #endregion
     const result = await updateProfile(
       {
         avatar: form.avatar,

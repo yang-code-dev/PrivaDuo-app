@@ -1,7 +1,9 @@
 const { test, expect } = require('@playwright/test')
 const fs = require('fs')
+const path = require('path')
 
-const TEST_IMAGE_PATH = '/Users/mac/Desktop/专属app/tests/e2e/certificate1.94775a7.jpg'
+const TEST_IMAGE_PATH = path.resolve(__dirname, '../../src/static/logo.png')
+const TEST_IMAGE_NAME = path.basename(TEST_IMAGE_PATH)
 const TEST_IMAGE_SIZE = fs.statSync(TEST_IMAGE_PATH).size
 const TEST_IMAGE_BASE64 = fs.readFileSync(TEST_IMAGE_PATH).toString('base64')
 
@@ -21,7 +23,7 @@ async function enableMockMode(page) {
       bytes[i] = binary.charCodeAt(i)
     }
 
-    const objectUrl = URL.createObjectURL(new Blob([bytes], { type: 'image/jpeg' }))
+    const objectUrl = URL.createObjectURL(new Blob([bytes], { type: 'image/png' }))
     window.__PAIRSPACE_FORCE_MOCK__ = true
     localStorage.setItem('pair-space:force-mock', '1')
     window.__PAIRSPACE_TEST_AVATAR__ = {
@@ -53,7 +55,7 @@ async function enableMockMode(page) {
       }, 50)
     }
   }, {
-    imageName: 'certificate1.94775a7.jpg',
+    imageName: TEST_IMAGE_NAME,
     imageBase64: TEST_IMAGE_BASE64,
     size: TEST_IMAGE_SIZE,
   })

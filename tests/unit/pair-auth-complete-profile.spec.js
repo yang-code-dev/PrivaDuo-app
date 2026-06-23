@@ -177,10 +177,16 @@ function createEvent({ token, signSecret, nickname = '小明', avatar = 'https:/
 describe('pair-auth completeInitialProfile', () => {
   let pairAuth
   let fixture
+  let previousPublicSignSecret
+  let previousCryptoSecret
 
   beforeEach(() => {
     jest.resetModules()
     fixture = createDbState()
+    previousPublicSignSecret = process.env.PAIRSPACE_PUBLIC_SIGN_SECRET
+    previousCryptoSecret = process.env.PAIRSPACE_CRYPTO_SECRET
+    process.env.PAIRSPACE_PUBLIC_SIGN_SECRET = APP_PUBLIC_SIGN_SECRET
+    process.env.PAIRSPACE_CRYPTO_SECRET = CRYPTO_SECRET
     global.uniCloud = {
       database() {
         return {
@@ -194,6 +200,16 @@ describe('pair-auth completeInitialProfile', () => {
   })
 
   afterEach(() => {
+    if (previousPublicSignSecret === undefined) {
+      delete process.env.PAIRSPACE_PUBLIC_SIGN_SECRET
+    } else {
+      process.env.PAIRSPACE_PUBLIC_SIGN_SECRET = previousPublicSignSecret
+    }
+    if (previousCryptoSecret === undefined) {
+      delete process.env.PAIRSPACE_CRYPTO_SECRET
+    } else {
+      process.env.PAIRSPACE_CRYPTO_SECRET = previousCryptoSecret
+    }
     global.uniCloud = undefined
   })
 

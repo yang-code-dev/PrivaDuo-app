@@ -1,14 +1,19 @@
 // @ts-check
 const { defineConfig } = require('@playwright/test')
 
+const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:5173'
+const executablePath = process.env.PLAYWRIGHT_CHROME_EXECUTABLE || ''
+
 module.exports = defineConfig({
   testDir: './tests/e2e',
   timeout: 60 * 1000,
   use: {
-    baseURL: 'http://127.0.0.1:5173',
+    baseURL,
     headless: true,
-    launchOptions: {
-      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-    },
+    launchOptions: executablePath
+      ? {
+          executablePath,
+        }
+      : undefined,
   },
 })

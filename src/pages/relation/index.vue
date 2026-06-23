@@ -128,32 +128,6 @@ const generating = ref(false)
 const binding = ref(false)
 const remoteCode = ref('')
 
-// #region debug-point R2:relation-session-flow
-function reportRelationDebug(msg, data = {}) {
-  if (
-    typeof window === 'undefined'
-    || !['localhost', '127.0.0.1', 'static-mp-171ab784-e0ea-4b77-ad6d-5d53ccbbd8a5.next.bspapp.com'].includes(window.location?.hostname || '')
-  ) {
-    return
-  }
-  fetch('http://127.0.0.1:7777/event', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      sessionId: 'auth-session-logout',
-      runId: 'pre-fix',
-      hypothesisId: 'R2',
-      location: 'src/pages/relation/index.vue',
-      msg: `[DEBUG] ${msg}`,
-      data,
-      ts: Date.now(),
-    }),
-  }).catch(() => {})
-}
-// #endregion
-
 const relationStatusText = computed(() => {
   if (relation.value.status === 'bound') return '已绑定'
   if (relation.value.status === 'unbound') return relation.value.pairId ? '已解绑' : '未建立配对'
@@ -223,30 +197,10 @@ function normalizeInviteCode(event) {
 
 async function loadRelation() {
   try {
-    // #region debug-point R2:relation-session-flow
-    reportRelationDebug('relation-load-start', {
-      uid: userStore.profile.uid || '',
-      hasToken: Boolean(userStore.profile.accessToken),
-      hasSessionSecret: Boolean(userStore.profile.sessionSecret),
-    })
-    // #endregion
     const result = await getMineOverview(getSession(), { includePreview: false })
     relation.value = result.relation || relation.value
     syncStore(result)
-    // #region debug-point R2:relation-session-flow
-    reportRelationDebug('relation-load-success', {
-      status: result.relation?.status || '',
-      pairId: result.relation?.pairId || '',
-    })
-    // #endregion
   } catch (error) {
-    // #region debug-point R2:relation-session-flow
-    reportRelationDebug('relation-load-error', {
-      message: error.message || '',
-      code: error.code || '',
-      handled: Boolean(error.handled),
-    })
-    // #endregion
     if (error.handled) return
     showToast(error.message || '配对关系加载失败')
   }
@@ -296,14 +250,6 @@ async function handleBind() {
   binding.value = true
   uni.showLoading({ title: '绑定中...', mask: true })
   try {
-    // #region debug-point R2:relation-session-flow
-    reportRelationDebug('relation-bind-start', {
-      inviteCode: remoteCode.value,
-      uid: userStore.profile.uid || '',
-      hasToken: Boolean(userStore.profile.accessToken),
-      hasSessionSecret: Boolean(userStore.profile.sessionSecret),
-    })
-    // #endregion
     const result = await bindByInviteCode(
       { inviteCode: remoteCode.value },
       getSession(),
@@ -311,26 +257,11 @@ async function handleBind() {
     syncStore(result)
     remoteCode.value = ''
     await loadRelation()
-    // #region debug-point R2:relation-session-flow
-    reportRelationDebug('relation-bind-success', {
-      coupleBindingStatus: result.couple?.bindingStatus || '',
-      pairId: result.pairId || result.couple?.pairId || '',
-      relationStatus: relation.value.status || '',
-      relationPairId: relation.value.pairId || '',
-    })
-    // #endregion
     uni.showToast({ title: '绑定成功', icon: 'success' })
     setTimeout(() => {
       reLaunch(ROUTES.home)
     }, 500)
   } catch (error) {
-    // #region debug-point R2:relation-session-flow
-    reportRelationDebug('relation-bind-failed', {
-      inviteCode: remoteCode.value,
-      message: error.message || '',
-      code: error.code || error.errCode || '',
-    })
-    // #endregion
     showToast(error.message || '绑定失败，请稍后再试')
   } finally {
     uni.hideLoading()

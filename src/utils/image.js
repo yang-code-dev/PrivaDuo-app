@@ -5,32 +5,6 @@ const ACCEPT_PATTERN = /\.(jpg|jpeg|png|webp)$/i
 const ACCEPT_MIME_PATTERN = /^image\/(jpeg|png|webp)$/i
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024
 
-// #region debug-point I1:image-selection
-function reportImageSelectionDebug(msg, data = {}) {
-  if (
-    typeof window === 'undefined'
-    || !['localhost', '127.0.0.1'].includes(window.location?.hostname || '')
-  ) {
-    return
-  }
-  fetch('http://127.0.0.1:7777/event', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      sessionId: 'web-image-upload',
-      runId: 'pre-fix',
-      hypothesisId: 'I1',
-      location: 'src/utils/image.js',
-      msg: `[DEBUG] ${msg}`,
-      data,
-      ts: Date.now(),
-    }),
-  }).catch(() => {})
-}
-// #endregion
-
 function fail(message) {
   const error = new Error(message)
   error.code = 'IMAGE_ERROR'
@@ -93,16 +67,6 @@ export async function chooseMomentImages() {
       tempFilePath: path,
       size: 0,
     }))
-  // #region debug-point I1:image-selection
-  reportImageSelectionDebug('moment-images-chosen', {
-    tempFilePaths: result.tempFilePaths || [],
-    tempFiles: normalizedFiles.map((item) => ({
-      path: item.path || item.tempFilePath || '',
-      size: Number(item.size || 0),
-      type: item.type || item.mimeType || '',
-    })),
-  })
-  // #endregion
   normalizedFiles.forEach((file) => validateMomentImage(file))
 
   const compressed = []
@@ -112,12 +76,6 @@ export async function chooseMomentImages() {
       path: localPath,
     })
   }
-
-  // #region debug-point I1:image-selection
-  reportImageSelectionDebug('moment-images-compressed', {
-    images: compressed.map((item) => item.path),
-  })
-  // #endregion
 
   return compressed
 }

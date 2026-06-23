@@ -144,32 +144,6 @@ const viewer = reactive({
 })
 let countdownTimer = null
 
-// #region debug-point H1:moment-submit-payload
-function reportHomeImageDebug(msg, data = {}) {
-  if (
-    typeof window === 'undefined'
-    || !['localhost', '127.0.0.1'].includes(window.location?.hostname || '')
-  ) {
-    return
-  }
-  fetch('http://127.0.0.1:7777/event', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      sessionId: 'web-image-upload',
-      runId: 'pre-fix',
-      hypothesisId: 'H1',
-      location: 'src/pages/home/index.vue',
-      msg: `[DEBUG] ${msg}`,
-      data,
-      ts: Date.now(),
-    }),
-  }).catch(() => {})
-}
-// #endregion
-
 const waterfallColumns = computed(() => splitWaterfallList(moments.value))
 const activeMoment = computed(() => moments.value.find((item) => item.id === activeMomentId.value) || null)
 
@@ -312,14 +286,6 @@ async function handlePublish() {
   publishing.value = true
   uni.showLoading({ title: '发布中...', mask: true })
   try {
-    // #region debug-point H1:moment-submit-payload
-    reportHomeImageDebug('home-submit-moment', {
-      content,
-      imageCount: publishForm.images.length,
-      imageSchemes: publishForm.images.map((item) => String(item || '').split(':')[0] || ''),
-      images: publishForm.images,
-    })
-    // #endregion
     const result = await publishMoment(
       {
         content,

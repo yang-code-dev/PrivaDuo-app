@@ -118,32 +118,6 @@ const submitButtonText = computed(() => (
   shouldShowProfileForm.value ? '完成资料并进入系统' : '登录 / 注册'
 ))
 
-// #region debug-point L1:login-session-write
-function reportLoginDebug(msg, data = {}) {
-  if (
-    typeof window === 'undefined'
-    || !['localhost', '127.0.0.1', 'static-mp-171ab784-e0ea-4b77-ad6d-5d53ccbbd8a5.next.bspapp.com'].includes(window.location?.hostname || '')
-  ) {
-    return
-  }
-  fetch('http://127.0.0.1:7777/event', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      sessionId: 'auth-session-logout',
-      runId: 'pre-fix',
-      hypothesisId: 'L1',
-      location: 'src/pages/auth/login.vue',
-      msg: `[DEBUG] ${msg}`,
-      data,
-      ts: Date.now(),
-    }),
-  }).catch(() => {})
-}
-// #endregion
-
 function showToast(message) {
   uni.showToast({
     title: message,
@@ -188,36 +162,17 @@ async function applyProfileRouting(session, baseResult = {}) {
 
   userStore.syncUser(nextUser, session)
   coupleStore.sync(nextCouple)
-  // #region debug-point L1:apply-profile-routing
-  reportLoginDebug('apply-profile-routing', {
-    profileCompleted: Boolean(profileResult.profile?.profileCompleted),
-    nickname: profileResult.profile?.nickname || '',
-    hasAvatar: Boolean(profileResult.profile?.avatar),
-    coupleBindingStatus: nextCouple.bindingStatus || '',
-  })
-  // #endregion
 
   if (resolveProfileCompletion(profileResult.profile)) {
     authStage.value = 'complete'
     form.code = ''
     form.nickname = profileResult.profile.nickname || ''
     form.avatar = profileResult.profile.avatar || ''
-    // #region debug-point L1:apply-profile-routing
-    reportLoginDebug('apply-profile-routing-require-completion', {
-      nickname: form.nickname || '',
-      hasAvatar: Boolean(form.avatar),
-    })
-    // #endregion
     showToast('请先完善昵称和头像')
     return
   }
 
   authStage.value = 'verify'
-  // #region debug-point L1:apply-profile-routing
-  reportLoginDebug('apply-profile-routing-launch', {
-    route: resolvePostLoginRoute(nextCouple),
-  })
-  // #endregion
   reLaunch(resolvePostLoginRoute(nextCouple))
 }
 
@@ -277,16 +232,6 @@ async function submitRegisterOrLogin() {
       code: form.code.trim(),
     })
 
-    // #region debug-point L1:login-session-write
-    reportLoginDebug('login-success-before-store', {
-      uid: result.user?.uid || '',
-      hasToken: Boolean(result.accessToken),
-      hasSessionSecret: Boolean(result.sessionSecret),
-      bindingStatus: result.user?.bindingStatus || '',
-      coupleBindingStatus: result.couple?.bindingStatus || '',
-    })
-    // #endregion
-
     userStore.setSession({
       uid: result.user.uid,
       mobile: form.mobile.trim(),
@@ -299,25 +244,11 @@ async function submitRegisterOrLogin() {
       profileCompleted: Boolean(result.user.profileCompleted),
     })
     coupleStore.sync(result.couple)
-    // #region debug-point L1:login-session-write
-    reportLoginDebug('login-success-after-store', {
-      uid: userStore.profile.uid || '',
-      hasToken: Boolean(userStore.profile.accessToken),
-      hasSessionSecret: Boolean(userStore.profile.sessionSecret),
-      profileCompleted: Boolean(result.user.profileCompleted),
-    })
-    // #endregion
     await applyProfileRouting({
       accessToken: result.accessToken,
       sessionSecret: result.sessionSecret,
     }, result)
   } catch (error) {
-    // #region debug-point L1:login-session-write
-    reportLoginDebug('login-failed', {
-      message: error.message || '',
-      code: error.code || error.errCode || '',
-    })
-    // #endregion
     showToast(error.message || '登录失败，请稍后再试')
   } finally {
     uni.hideLoading()
@@ -352,23 +283,8 @@ async function submitProfileCompletion() {
     })
     coupleStore.sync(result.couple)
     authStage.value = 'verify'
-    // #region debug-point L1:profile-complete-submit
-    reportLoginDebug('profile-complete-success', {
-      nickname: result.user?.nickname || form.nickname.trim(),
-      hasAvatar: Boolean(result.user?.avatar || form.avatar),
-      route: resolvePostLoginRoute(result.couple),
-    })
-    // #endregion
     reLaunch(resolvePostLoginRoute(result.couple))
   } catch (error) {
-    // #region debug-point L1:profile-complete-submit
-    reportLoginDebug('profile-complete-failed', {
-      message: error.message || '',
-      code: error.code || error.errCode || '',
-      nickname: form.nickname.trim(),
-      hasAvatar: Boolean(form.avatar),
-    })
-    // #endregion
     showToast(error.message || '资料完善失败，请稍后重试')
   } finally {
     uni.hideLoading()

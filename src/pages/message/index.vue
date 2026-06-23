@@ -157,32 +157,6 @@ let recordTimer = null
 let audioContext = null
 let markingRead = false
 
-// #region debug-point M1:chat-image-submit
-function reportChatImageDebug(msg, data = {}) {
-  if (
-    typeof window === 'undefined'
-    || !['localhost', '127.0.0.1'].includes(window.location?.hostname || '')
-  ) {
-    return
-  }
-  fetch('http://127.0.0.1:7777/event', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      sessionId: 'web-image-upload',
-      runId: 'pre-fix',
-      hypothesisId: 'M1',
-      location: 'src/pages/message/index.vue',
-      msg: `[DEBUG] ${msg}`,
-      data,
-      ts: Date.now(),
-    }),
-  }).catch(() => {})
-}
-// #endregion
-
 function getSession() {
   return {
     accessToken: userStore.profile.accessToken,
@@ -336,13 +310,6 @@ async function chooseImages() {
     })
     const file = result.tempFiles?.[0]
     const path = result.tempFilePaths?.[0]
-    // #region debug-point M1:chat-image-submit
-    reportChatImageDebug('chat-image-chosen', {
-      tempFilePath: path || '',
-      size: Number(file?.size || 0),
-      type: file?.type || file?.mimeType || '',
-    })
-    // #endregion
     try {
       validateMomentImage({
         path,
@@ -355,12 +322,6 @@ async function chooseImages() {
       return
     }
 
-    // #region debug-point M1:chat-image-submit
-    reportChatImageDebug('chat-image-submit', {
-      mediaUrl: path || '',
-      mediaScheme: String(path || '').split(':')[0] || '',
-    })
-    // #endregion
     await pushMessage({
       messageType: 'image',
       content: '[图片]',

@@ -42,39 +42,7 @@ const cropping = ref(false)
 const canvasId = `avatar-crop-${Date.now()}`
 const instance = getCurrentInstance()
 
-// #region debug-point A:avatar-file-selection
-function reportAvatarDebug(hypothesisId, msg, data = {}) {
-  if (
-    typeof window === 'undefined'
-    || !['localhost', '127.0.0.1'].includes(window.location?.hostname || '')
-  ) {
-    return
-  }
-  fetch('http://127.0.0.1:7777/event', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      sessionId: 'avatar-upload-fail',
-      runId: 'pre-fix',
-      hypothesisId,
-      location: 'src/components/AvatarUploader.vue',
-      msg: `[DEBUG] ${msg}`,
-      data,
-      ts: Date.now(),
-    }),
-  }).catch(() => {})
-}
-// #endregion
-
 function emitError(message) {
-  // #region debug-point A:avatar-file-selection
-  reportAvatarDebug('A', 'avatar-uploader-error', {
-    message,
-    rawImagePath: rawImagePath.value,
-  })
-  // #endregion
   emit('error', message)
 }
 
@@ -91,13 +59,6 @@ function chooseAvatar() {
       path: testAvatar.tempFilePath,
       size: Number(testAvatar.size || 0),
       type: testAvatar.type || testAvatar.mimeType || '',
-    })
-    reportAvatarDebug('A', 'avatar-chosen', {
-      tempFilePath: testAvatar.tempFilePath,
-      size: Number(testAvatar.size || 0),
-      valid: state.valid,
-      message: state.message,
-      testMode: true,
     })
     if (!state.valid) {
       emitError(state.message)
@@ -119,15 +80,6 @@ function chooseAvatar() {
         size: tempFile.size || 0,
         type: tempFile.type || tempFile.mimeType || '',
       })
-
-      // #region debug-point A:avatar-file-selection
-      reportAvatarDebug('A', 'avatar-chosen', {
-        tempFilePath,
-        size: Number(tempFile.size || 0),
-        valid: state.valid,
-        message: state.message,
-      })
-      // #endregion
 
       if (!state.valid) {
         emitError(state.message)
@@ -175,11 +127,6 @@ async function confirmCrop() {
   try {
     const testAvatar = getTestAvatarMock()
     if (testAvatar?.croppedPath) {
-      reportAvatarDebug('B', 'avatar-cropped', {
-        rawImagePath: rawImagePath.value,
-        croppedPath: testAvatar.croppedPath,
-        testMode: true,
-      })
       emit('update:modelValue', testAvatar.croppedPath)
       cropVisible.value = false
       rawImagePath.value = ''
@@ -205,12 +152,6 @@ async function confirmCrop() {
     ctx.draw(false, async () => {
       try {
         const cropped = await canvasToTempFilePath()
-        // #region debug-point B:cropped-avatar-path
-        reportAvatarDebug('B', 'avatar-cropped', {
-          rawImagePath: rawImagePath.value,
-          croppedPath: cropped,
-        })
-        // #endregion
         emit('update:modelValue', cropped)
         cropVisible.value = false
         rawImagePath.value = ''
