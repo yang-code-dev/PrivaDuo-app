@@ -1,0 +1,22 @@
+[
+  {
+    "IndexName": "active_code_idx",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "codeHash", "Direction": "1" },
+        { "Name": "status", "Direction": "1" }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "owner_status_idx",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "ownerUserId", "Direction": "1" },
+        { "Name": "status", "Direction": "1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

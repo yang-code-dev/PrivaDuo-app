@@ -1,0 +1,20 @@
+[
+  {
+    "IndexName": "uid_unique",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "uid", "Direction": "1" }
+      ],
+      "MgoIsUnique": true
+    }
+  },
+  {
+    "IndexName": "mobile_hash_unique",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "mobileHash", "Direction": "1" }
+      ],
+      "MgoIsUnique": true
+    }
+  }
+]

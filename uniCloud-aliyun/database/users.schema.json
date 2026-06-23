@@ -1,0 +1,33 @@
+{
+  "bsonType": "object",
+  "required": ["uid", "mobileHash", "mobileCipher", "nickname", "registeredAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "ID" },
+    "uid": { "bsonType": "string" },
+    "mobileHash": { "bsonType": "string" },
+    "mobileCipher": { "bsonType": "string" },
+    "nickname": { "bsonType": "string" },
+    "avatar": { "bsonType": "string", "defaultValue": "" },
+    "signature": { "bsonType": "string", "defaultValue": "" },
+    "bindingStatus": { "bsonType": "string", "defaultValue": "unbound" },
+    "bindingLocked": { "bsonType": "bool", "defaultValue": false },
+    "inviteDisabled": { "bsonType": "bool", "defaultValue": false },
+    "pairId": { "bsonType": "string", "defaultValue": "" },
+    "notificationSettings": {
+      "bsonType": "object",
+      "defaultValue": {
+        "newMessage": true,
+        "newMoment": true,
+        "anniversaryReminder": true
+      }
+    },
+    "registeredAt": { "bsonType": "timestamp", "forceDefaultValue": { "$env": "now" } },
+    "updatedAt": { "bsonType": "timestamp", "forceDefaultValue": { "$env": "now" } }
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "pages": [
+    {
+      "path": "pages/splash/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/auth/login",
+      "style": {
+        "navigationBarTitleText": "登录注册"
+      }
+    },
+    {
+      "path": "pages/bind/guide",
+      "style": {
+        "navigationBarTitleText": "绑定引导"
+      }
+    },
+    {
+      "path": "pages/home/index",
+      "style": {
+        "navigationBarTitleText": "我们的日常",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/message/index",
+      "style": {
+        "navigationBarTitleText": "专属聊天"
+      }
+    },
+    {
+      "path": "pages/moment/index",
+      "style": {
+        "navigationBarTitleText": "专属记录"
+      }
+    },
+    {
+      "path": "pages/mine/index",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    },
+    {
+      "path": "pages/diary/detail",
+      "style": {
+        "navigationBarTitleText": "共同日记"
+      }
+    },
+    {
+      "path": "pages/anniversary/detail",
+      "style": {
+        "navigationBarTitleText": "纪念日"
+      }
+    },
+    {
+      "path": "pages/wishlist/index",
+      "style": {
+        "navigationBarTitleText": "心愿清单"
+      }
+    },
+    {
+      "path": "pages/album/detail",
+      "style": {
+        "navigationBarTitleText": "双人专属相册"
+      }
+    },
+    {
+      "path": "pages/settings/index",
+      "style": {
+        "navigationBarTitleText": "个人资料"
+      }
+    },
+    {
+      "path": "pages/notification/index",
+      "style": {
+        "navigationBarTitleText": "消息通知设置"
+      }
+    },
+    {
+      "path": "pages/privacy/index",
+      "style": {
+        "navigationBarTitleText": "隐私管理"
+      }
+    },
+    {
+      "path": "pages/relation/index",
+      "style": {
+        "navigationBarTitleText": "配对关系管理"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "Pair Space",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f7f8fc"
+  },
+  "tabBar": {
+    "color": "#9ca3af",
+    "selectedColor": "#ec4899",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "日常",
+        "iconPath": "static/tabbar/home.png",
+        "selectedIconPath": "static/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/message/index",
+        "text": "聊天",
+        "iconPath": "static/tabbar/message.png",
+        "selectedIconPath": "static/tabbar/message-active.png"
+      },
+      {
+        "pagePath": "pages/moment/index",
+        "text": "记录",
+        "iconPath": "static/tabbar/moment.png",
+        "selectedIconPath": "static/tabbar/moment-active.png"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "我的",
+        "iconPath": "static/tabbar/mine.png",
+        "selectedIconPath": "static/tabbar/mine-active.png"
+      }
+    ]
+  }
+}

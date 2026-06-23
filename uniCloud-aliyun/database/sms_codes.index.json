@@ -1,0 +1,12 @@
+[
+  {
+    "IndexName": "mobile_request_idx",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "mobileHash", "Direction": "1" },
+        { "Name": "requestAt", "Direction": "-1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "bsonType": "object",
+  "required": ["pairKey", "userAId", "userBId", "bindingStatus", "boundAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "ID" },
+    "pairKey": { "bsonType": "string" },
+    "userAId": { "bsonType": "string" },
+    "userBId": { "bsonType": "string" },
+    "bindingStatus": { "bsonType": "string", "defaultValue": "pending" },
+    "boundAt": { "bsonType": "timestamp", "forceDefaultValue": { "$env": "now" } },
+    "relationCipher": { "bsonType": "string", "defaultValue": "" },
+    "unbindRequestedBy": { "bsonType": "string", "defaultValue": "" },
+    "unbindConfirmA": { "bsonType": "bool", "defaultValue": false },
+    "unbindConfirmB": { "bsonType": "bool", "defaultValue": false },
+    "unboundAt": { "bsonType": "timestamp" },
+    "updatedAt": { "bsonType": "timestamp", "forceDefaultValue": { "$env": "now" } }
+  }
+}

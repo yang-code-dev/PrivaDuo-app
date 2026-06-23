@@ -1,0 +1,12 @@
+[
+  {
+    "IndexName": "pair_publish_time_idx",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "pairId", "Direction": "1" },
+        { "Name": "publishedAt", "Direction": "-1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

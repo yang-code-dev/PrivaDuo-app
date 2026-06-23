@@ -1,0 +1,12 @@
+[
+  {
+    "IndexName": "pair_anniversary_date_idx",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "pairId", "Direction": "1" },
+        { "Name": "anniversaryDate", "Direction": "1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

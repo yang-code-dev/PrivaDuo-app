@@ -1,0 +1,21 @@
+[
+  {
+    "IndexName": "token_hash_unique",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "tokenHash", "Direction": "1" }
+      ],
+      "MgoIsUnique": true
+    }
+  },
+  {
+    "IndexName": "user_expire_idx",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "userId", "Direction": "1" },
+        { "Name": "expiresAt", "Direction": "1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

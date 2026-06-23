@@ -1,0 +1,27 @@
+{
+  "bsonType": "object",
+  "required": ["pairId", "userAId", "userBId", "authorId", "title", "content", "writtenAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "ID" },
+    "pairId": { "bsonType": "string" },
+    "userAId": { "bsonType": "string" },
+    "userBId": { "bsonType": "string" },
+    "authorId": { "bsonType": "string" },
+    "authorNickname": { "bsonType": "string", "defaultValue": "" },
+    "title": { "bsonType": "string" },
+    "titleCipher": { "bsonType": "string", "defaultValue": "" },
+    "content": { "bsonType": "string" },
+    "contentCipher": { "bsonType": "string", "defaultValue": "" },
+    "images": { "bsonType": "array", "arrayType": "string", "defaultValue": [] },
+    "imagesCipher": { "bsonType": "string", "defaultValue": "" },
+    "privacyStatus": { "bsonType": "string", "defaultValue": "couple_only" },
+    "writtenAt": { "bsonType": "timestamp", "forceDefaultValue": { "$env": "now" } },
+    "updatedAt": { "bsonType": "timestamp", "forceDefaultValue": { "$env": "now" } }
+  }
+}

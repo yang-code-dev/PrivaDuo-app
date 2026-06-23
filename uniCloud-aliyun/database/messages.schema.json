@@ -1,0 +1,27 @@
+{
+  "bsonType": "object",
+  "required": ["pairId", "senderId", "receiverId", "messageType", "sentAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "ID" },
+    "pairId": { "bsonType": "string" },
+    "senderId": { "bsonType": "string" },
+    "receiverId": { "bsonType": "string" },
+    "clientMsgId": { "bsonType": "string", "defaultValue": "" },
+    "content": { "bsonType": "string", "defaultValue": "" },
+    "contentCipher": { "bsonType": "string", "defaultValue": "" },
+    "messageType": { "bsonType": "string", "defaultValue": "text" },
+    "mediaUrl": { "bsonType": "string", "defaultValue": "" },
+    "mediaCipher": { "bsonType": "string", "defaultValue": "" },
+    "voiceDuration": { "bsonType": "int", "defaultValue": 0 },
+    "readBy": { "bsonType": "array", "arrayType": "string", "defaultValue": [] },
+    "messageStatus": { "bsonType": "string", "defaultValue": "sent" },
+    "sentAt": { "bsonType": "timestamp", "forceDefaultValue": { "$env": "now" } },
+    "readAt": { "bsonType": "timestamp" }
+  }
+}

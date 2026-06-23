@@ -1,0 +1,12 @@
+[
+  {
+    "IndexName": "pair_written_time_idx",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "pairId", "Direction": "1" },
+        { "Name": "writtenAt", "Direction": "-1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

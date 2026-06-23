@@ -1,0 +1,22 @@
+[
+  {
+    "IndexName": "pair_key_unique",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "pairKey", "Direction": "1" }
+      ],
+      "MgoIsUnique": true
+    }
+  },
+  {
+    "IndexName": "pair_status_idx",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "userAId", "Direction": "1" },
+        { "Name": "userBId", "Direction": "1" },
+        { "Name": "bindingStatus", "Direction": "1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

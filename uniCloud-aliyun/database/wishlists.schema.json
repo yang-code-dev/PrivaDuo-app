@@ -1,0 +1,25 @@
+{
+  "bsonType": "object",
+  "required": ["pairId", "userAId", "userBId", "title", "createdBy"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "ID" },
+    "pairId": { "bsonType": "string" },
+    "userAId": { "bsonType": "string" },
+    "userBId": { "bsonType": "string" },
+    "title": { "bsonType": "string" },
+    "titleCipher": { "bsonType": "string", "defaultValue": "" },
+    "description": { "bsonType": "string", "defaultValue": "" },
+    "descriptionCipher": { "bsonType": "string", "defaultValue": "" },
+    "status": { "bsonType": "string", "defaultValue": "pending" },
+    "completed": { "bsonType": "bool", "defaultValue": false },
+    "createdBy": { "bsonType": "string" },
+    "createdAt": { "bsonType": "timestamp", "forceDefaultValue": { "$env": "now" } },
+    "updatedAt": { "bsonType": "timestamp", "forceDefaultValue": { "$env": "now" } }
+  }
+}

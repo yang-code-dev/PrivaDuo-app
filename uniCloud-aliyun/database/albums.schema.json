@@ -1,0 +1,20 @@
+{
+  "bsonType": "object",
+  "required": ["pairId", "userAId", "userBId", "name", "createdAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "ID" },
+    "pairId": { "bsonType": "string" },
+    "userAId": { "bsonType": "string" },
+    "userBId": { "bsonType": "string" },
+    "name": { "bsonType": "string" },
+    "photos": { "bsonType": "array", "arrayType": "object", "defaultValue": [] },
+    "createdAt": { "bsonType": "timestamp", "forceDefaultValue": { "$env": "now" } },
+    "updatedAt": { "bsonType": "timestamp", "forceDefaultValue": { "$env": "now" } }
+  }
+}

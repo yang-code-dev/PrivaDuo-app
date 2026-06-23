@@ -1,0 +1,23 @@
+{
+  "bsonType": "object",
+  "required": ["pairId", "requesterId", "targetId", "status", "createdAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "ID" },
+    "pairId": { "bsonType": "string" },
+    "requesterId": { "bsonType": "string" },
+    "requesterNickname": { "bsonType": "string", "defaultValue": "" },
+    "targetId": { "bsonType": "string" },
+    "status": { "bsonType": "string", "defaultValue": "pending" },
+    "targetSecondaryToken": { "bsonType": "string", "defaultValue": "" },
+    "targetSecondaryTokenHash": { "bsonType": "string", "defaultValue": "" },
+    "responderId": { "bsonType": "string", "defaultValue": "" },
+    "createdAt": { "bsonType": "timestamp", "forceDefaultValue": { "$env": "now" } },
+    "respondedAt": { "bsonType": "timestamp" }
+  }
+}

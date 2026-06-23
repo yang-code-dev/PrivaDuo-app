@@ -1,0 +1,29 @@
+{
+  "bsonType": "object",
+  "required": ["pairId", "userAId", "userBId", "publisherId", "publishedAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "ID" },
+    "pairId": { "bsonType": "string" },
+    "userAId": { "bsonType": "string" },
+    "userBId": { "bsonType": "string" },
+    "publisherId": { "bsonType": "string" },
+    "publisherNickname": { "bsonType": "string", "defaultValue": "" },
+    "publisherAvatar": { "bsonType": "string", "defaultValue": "" },
+    "content": { "bsonType": "string", "defaultValue": "" },
+    "contentCipher": { "bsonType": "string", "defaultValue": "" },
+    "images": { "bsonType": "array", "arrayType": "string", "defaultValue": [] },
+    "imagesCipher": { "bsonType": "string", "defaultValue": "" },
+    "likes": { "bsonType": "array", "arrayType": "object", "defaultValue": [] },
+    "comments": { "bsonType": "array", "arrayType": "object", "defaultValue": [] },
+    "commentsCipher": { "bsonType": "string", "defaultValue": "" },
+    "likeCount": { "bsonType": "int", "defaultValue": 0 },
+    "commentCount": { "bsonType": "int", "defaultValue": 0 },
+    "publishedAt": { "bsonType": "timestamp", "forceDefaultValue": { "$env": "now" } }
+  }
+}

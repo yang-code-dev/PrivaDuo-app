@@ -1,0 +1,13 @@
+[
+  {
+    "IndexName": "device_code_created_desc_idx",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "deviceFingerprint", "Direction": "1" },
+        { "Name": "code", "Direction": "1" },
+        { "Name": "createdAt", "Direction": "-1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

@@ -1,0 +1,76 @@
+# Dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Build outputs and caches
+dist/
+build/
+coverage/
+unpackage/
+.cache/
+.temp/
+.tmp/
+tmp/
+temp/
+.vite/
+.output/
+test-results/
+playwright-report/
+blob-report/
+
+# HBuilderX / IDE
+.hbuilderx/
+.idea/
+.vscode/
+.trae/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local config
+*.local
+.env
+.env.*
+!.env.example
+src/utils/cloud.js
+src/utils/cloud.local.js
+
+# uniCloud local / private files
+uniCloud-aliyun/migrations/
+uniCloud-aliyun/.env
+uniCloud-aliyun/.env.*
+
+# Certificates and secrets
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.mobileprovision
+*.secret
+*.secret.*
+certificate*
+*.license
+
+# Debug artifacts
+.dbg/
+debug-*.md
+*.trace
+*.pid

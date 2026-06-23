@@ -1,0 +1,12 @@
+[
+  {
+    "IndexName": "pair_sent_time_idx",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "pairId", "Direction": "1" },
+        { "Name": "sentAt", "Direction": "-1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

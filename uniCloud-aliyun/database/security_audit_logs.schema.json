@@ -1,0 +1,23 @@
+{
+  "bsonType": "object",
+  "required": ["action", "code", "message", "level", "deviceFingerprint", "createdAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "ID" },
+    "action": { "bsonType": "string" },
+    "code": { "bsonType": "string" },
+    "message": { "bsonType": "string" },
+    "level": { "bsonType": "string", "defaultValue": "medium" },
+    "uid": { "bsonType": "string", "defaultValue": "" },
+    "targetId": { "bsonType": "string", "defaultValue": "" },
+    "pairId": { "bsonType": "string", "defaultValue": "" },
+    "deviceFingerprint": { "bsonType": "string" },
+    "alertTriggered": { "bsonType": "bool", "defaultValue": false },
+    "createdAt": { "bsonType": "timestamp", "forceDefaultValue": { "$env": "now" } }
+  }
+}

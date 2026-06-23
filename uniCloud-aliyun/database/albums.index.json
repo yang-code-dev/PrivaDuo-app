@@ -1,0 +1,12 @@
+[
+  {
+    "IndexName": "pair_album_update_idx",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "pairId", "Direction": "1" },
+        { "Name": "updatedAt", "Direction": "-1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

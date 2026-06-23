@@ -1,0 +1,25 @@
+{
+  "bsonType": "object",
+  "required": ["pairId", "userAId", "userBId", "name", "anniversaryDate"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "ID" },
+    "pairId": { "bsonType": "string" },
+    "userAId": { "bsonType": "string" },
+    "userBId": { "bsonType": "string" },
+    "name": { "bsonType": "string" },
+    "nameCipher": { "bsonType": "string", "defaultValue": "" },
+    "category": { "bsonType": "string", "defaultValue": "日常" },
+    "categoryCipher": { "bsonType": "string", "defaultValue": "" },
+    "anniversaryDate": { "bsonType": "date" },
+    "remindAt": { "bsonType": "string", "defaultValue": "09:00" },
+    "remindDaysBefore": { "bsonType": "int", "defaultValue": 0 },
+    "repeatCycle": { "bsonType": "string", "defaultValue": "yearly" },
+    "createdAt": { "bsonType": "timestamp", "forceDefaultValue": { "$env": "now" } }
+  }
+}

@@ -1,0 +1,13 @@
+[
+  {
+    "IndexName": "pair_status_created_idx",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "pairId", "Direction": "1" },
+        { "Name": "status", "Direction": "1" },
+        { "Name": "createdAt", "Direction": "-1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

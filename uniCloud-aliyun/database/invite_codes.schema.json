@@ -1,0 +1,22 @@
+{
+  "bsonType": "object",
+  "required": ["inviteId", "ownerUserId", "codeHash", "codeCipher", "status", "createdAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "ID" },
+    "inviteId": { "bsonType": "string" },
+    "ownerUserId": { "bsonType": "string" },
+    "codeHash": { "bsonType": "string" },
+    "codeCipher": { "bsonType": "string" },
+    "issuerDeviceFingerprint": { "bsonType": "string", "defaultValue": "" },
+    "status": { "bsonType": "string", "defaultValue": "active" },
+    "createdAt": { "bsonType": "timestamp" },
+    "consumedAt": { "bsonType": "timestamp" },
+    "consumedByUserId": { "bsonType": "string", "defaultValue": "" }
+  }
+}
